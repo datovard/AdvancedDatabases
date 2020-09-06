@@ -1,1 +1,1 @@
-# SakilaETLWorkshop
+# Sakila ETL Workshop
