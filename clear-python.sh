@@ -1,0 +1,2 @@
+docker rm sakilaetlworkshop_etl-runner_1
+docker rmi sakilaetlworkshop_etl-runner

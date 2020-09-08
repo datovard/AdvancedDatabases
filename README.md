@@ -34,12 +34,13 @@ Here you can find a diagram of the Sakila database with 16 tables between films,
 
 1. Contrastar popularidad de las peliculas con bases de datos alternativas (Rotten Tomatoes, IMdb)
 
-2. Total de películas no pagadas y pérdida de dinero
+2. Relación entre rentabilidad y actor respecto a premiaciones
 
-3. Géneros más vistos por ciudad, país, anualmente, mensualmente
+3. Promedio de dinero perdido por ciudad o país, anualmente
 
-4. Géneros más rentables por ciudad, país, anualmente, mensualmente
+4. Géneros más vistos por ciudad o país, anualmente
 
-5. Relación entre rentabilidad y actor respecto a premiaciones
+5. Géneros más rentables por ciudad, país, anualmente, mensualmente
 
-6. Rentabilidad por país y ciudad
+
+

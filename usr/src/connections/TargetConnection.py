@@ -1,8 +1,8 @@
 import mysql.connector
 
-class SourceConnection:
-    hostname = 'mysql-source'
-    database='sakila'
+class TargetConnection:
+    hostname = 'mysql-target'
+    database='target'
     username='root'
     password='secret'
     connection=None

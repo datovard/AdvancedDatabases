@@ -6,6 +6,11 @@ services:
         context: .
     environment:
       MYSQL_ROOT_PASSWORD: secret
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     volumes:
       - mysql-source-data:/var/lib/mysql
     ports: 
@@ -16,6 +21,11 @@ services:
         context: .
     environment:
       MYSQL_ROOT_PASSWORD: secret
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     volumes:
       - mysql-target-data:/var/lib/mysql
     ports: 
