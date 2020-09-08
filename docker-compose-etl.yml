@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  etl-runner:
+    build:
+        dockerfile: ./config/docker/etl-runner.Dockerfile
+        context: .
+volumes:
+  mysql-source-data:
+  mysql-target-data:

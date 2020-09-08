@@ -1,3 +1,4 @@
-docker rm sakilaetlworkshop_mysql-server_1
+docker stop sakilaetlworkshop_etl-runner_1 sakilaetlworkshop_mysql-target_1 sakilaetlworkshop_mysql-source_1
+docker rm sakilaetlworkshop_etl-runner_1 sakilaetlworkshop_mysql-target_1 sakilaetlworkshop_mysql-source_1
 docker volume prune -f
-docker image rm sakilaetlworkshop_mysql-server
+docker image rm sakilaetlworkshop_etl-runner sakilaetlworkshop_mysql-target sakilaetlworkshop_mysql-source

@@ -1,14 +1,25 @@
 version: "3.7"
 services:
-  mysql-server:
+  mysql-source:
     build:
-        dockerfile: ./config/docker/mysql.Dockerfile
+        dockerfile: ./config/docker/mysql-source.Dockerfile
         context: .
     environment:
       MYSQL_ROOT_PASSWORD: secret
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql-source-data:/var/lib/mysql
     ports: 
       - "33060:3306"
+  mysql-target:
+    build:
+        dockerfile: ./config/docker/mysql-target.Dockerfile
+        context: .
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - mysql-target-data:/var/lib/mysql
+    ports: 
+      - "33061:3306"
 volumes:
-  mysql-data:
+  mysql-source-data:
+  mysql-target-data:
