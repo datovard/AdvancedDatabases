@@ -9,4 +9,4 @@ COPY /usr/src/ .
 
 RUN ls
 
-# CMD [ "python", "./your-daemon-or-script.py" ]
+CMD [ "python", "./index.py" ]

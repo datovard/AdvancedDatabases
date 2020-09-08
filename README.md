@@ -4,20 +4,27 @@ Welcome!, this is my workshop to get to know how *Extraction*, *Tranformation* a
 
 ## Running the data source on Docker
 
-This project has automatized the database on a Docker instance, you just have to run this command on your local machine:
+This project has automatized the databases on a Docker instance, you just have to run this command on your local machine:
 
 	docker-compose up -d
 
-Wait for the MySQL instance and database to finish is initial load and connect to it with any Database Administration Software you want (For example, MySQL Workbench).
+Wait for the MySQL instances and databases to finish is initial load and connect to it with any Database Administration Software you want (For example, MySQL Workbench).
 
-To connect to the database, use this values:
+To connect to the **source** database, use this values:
 
 	Hostname: localhost or 127.0.0.1
-	Port: 3306
+	Port: 33060
 	Username: root
 	Password: secret
 
-## Sakila database definition
+To connect to the **target** database, use this values:
+
+	Hostname: localhost or 127.0.0.1
+	Port: 33061
+	Username: root
+	Password: secret
+
+## (Sakila) source database definition
 
 Here you can find a diagram of the Sakila database with 16 tables between films, actors, customers, staff, stores and rentals of a DVD rental chain store. 
 
