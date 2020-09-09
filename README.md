@@ -41,9 +41,9 @@ Here you can find a diagram of the Sakila database with 16 tables between films,
 
 ## ETL operations definitions
 
-1. We want to know which category of movies most viewed in each city anually 
+1. We want to know which category of movies is the most viewed in each city anually 
 
-2. We want to know which category of movies most viewed in each country anually
+2. We want to know which category of movies is the most viewed in each country anually
 
 3. We want to know which film is getting the most unreturned rentals, the total cost of replacement of those copies and how much it was lost on those rentals
 
