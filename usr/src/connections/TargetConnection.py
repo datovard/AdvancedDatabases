@@ -1,7 +1,7 @@
 import mysql.connector
 
 class TargetConnection:
-    hostname = 'mysql-target'
+    hostname='mysql-target'
     database='target'
     username='root'
     password='secret'
@@ -40,3 +40,6 @@ class TargetConnection:
         cursor.close()
 
         return result
+    
+    def commitChanges(self):
+        self.connection.commit()

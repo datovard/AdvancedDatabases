@@ -36,9 +36,10 @@ Here you can find a diagram of the Sakila database with 16 tables between films,
 
 2. Relación entre rentabilidad y actor respecto a premiaciones
 
-3. Promedio de dinero perdido por ciudad o país, anualmente
+3. We want to know which film is getting the most unreturned rentals, the total cost of replacement of those copies and how much it was lost on those rentals
 
-4. Géneros más vistos por ciudad o país, anualmente
+4. We want to know which category of movies most viewed in each city anually and
+   We want to know which category of movies most viewed in each country anually
 
 5. Géneros más rentables por ciudad, país, anualmente, mensualmente
 

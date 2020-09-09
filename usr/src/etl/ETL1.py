@@ -1,4 +1,5 @@
-from connections import SourceConnection, TargetConnection
+from connections.SourceConnection import SourceConnection
+from connections.TargetConnection import TargetConnection
 
 class ETL1:
     sourceConnection: None
@@ -10,6 +11,7 @@ class ETL1:
     
     def startETL1(self):
         self.startTemporalDatabases()
+        self.startTransformationsAndLoads()
     
     def startTemporalByCity(self):
         query = """
@@ -46,20 +48,57 @@ class ETL1:
     
 
     def transformAndLoadByCity(self):
-        query = """
-        SELECT COUNT(*) FROM rents_by_category_city_and_year;"""
+        query = "SELECT COUNT(*) FROM rents_by_category_city_and_year;"
 
         results = self.sourceConnection.runQuery(query)
         row_count = results[0][0]
+        rounds = int(row_count/1000) + 1
 
+        for i in range(0, rounds):
+            query = "SELECT MAX(rental) as rental, city, year FROM rents_by_category_city_and_year GROUP BY year, city ORDER BY city ASC, year DESC"
+            query += " LIMIT " + str(i * 1000) + ", 1000"
 
+            results = self.sourceConnection.runQuery(query)
+            
+            for j in results:
+                query_category = "SELECT category FROM rents_by_category_city_and_year WHERE year = " + str(j[2]) + " AND city = '" + j[1] + "' AND rental = "+ str(j[0]) +";"
+                
+                categories = self.sourceConnection.runQuery(query_category)
+
+                for category in categories:
+                    query_insert = "INSERT INTO rents_by_category_city_and_year (rental, year, category, city) VALUES ("+str(j[0])+", "+str(j[2])+", '"+category[0]+"', '"+j[1]+"' )"
+
+                    self.targetConnection.runQuery(query_insert)
+                    self.targetConnection.commitChanges()
+
+    def transformAndLoadByCountry(self):
+        query = "SELECT COUNT(*) FROM rents_by_category_country_and_year;"
+
+        results = self.sourceConnection.runQuery(query)
+        row_count = results[0][0]
+        rounds = int(row_count/1000) + 1
+
+        for i in range(0, rounds):
+            query = "SELECT MAX(rental) as rental, country, year FROM rents_by_category_country_and_year GROUP BY year, country ORDER BY country ASC, year DESC"
+            query += " LIMIT " + str(i * 1000) + ", 1000"
+
+            results = self.sourceConnection.runQuery(query)
+            
+            for j in results:
+                query_category = "SELECT category FROM rents_by_category_country_and_year WHERE year = " + str(j[2]) + " AND country = '" + j[1] + "' AND rental = "+ str(j[0]) +";"
+                
+                categories = self.sourceConnection.runQuery(query_category)
+
+                for category in categories:
+                    query_insert = "INSERT INTO rents_by_category_country_and_year (rental, year, category, country) VALUES ("+str(j[0])+", "+str(j[2])+", '"+category[0]+"', '"+j[1]+"' )"
+
+                    self.targetConnection.runQuery(query_insert)
+                    self.targetConnection.commitChanges()
 
     def startTemporalDatabases(self):
         self.startTemporalByCity()
         self.startTemporalByCountry()
 
+    def startTransformationsAndLoads(self):
         self.transformAndLoadByCity()
-
-
-
-        
+        self.transformAndLoadByCountry()
