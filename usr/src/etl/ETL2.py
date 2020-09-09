@@ -10,35 +10,46 @@ class ETL2:
         self.targetConnection = TargetConnection()
     
     def startETL2(self):
+        self.startTemporalDatabases()
         self.startTransformationsAndLoads()
     
+    def startTemporalDatabases(self):
+        query = """
+        CREATE TEMPORARY TABLE rents_by_category_country_and_year
+        (SELECT COUNT(rental.rental_date) as rental, YEAR(rental.rental_date)as year, category.name as category, country.country as country
+            FROM rental 
+            LEFT JOIN inventory ON(rental.inventory_id = inventory.inventory_id)
+            LEFT JOIN film ON (inventory.film_id = film.film_id)
+            LEFT JOIN film_category ON (film.film_id = film_category.film_id)
+            LEFT JOIN category ON (film_category.category_id = category.category_id)
+            LEFT JOIN customer ON (rental.customer_id = customer.customer_id)
+            LEFT JOIN address ON ( customer.address_id = address.address_id )
+            LEFT JOIN city ON (address.city_id = city.city_id)
+            LEFT JOIN country ON (city.country_id = country.country_id)
+            GROUP BY country, category, year ORDER BY country ASC, year DESC, rental DESC);"""
+
+        self.sourceConnection.runQuery(query)
+
     def startTransformationsAndLoads(self):
-        query_count = "SELECT COUNT(*) FROM rental WHERE return_date IS NULL;"
-        
-        count = self.sourceConnection.runQuery(query_count)
-        row_count = count[0][0]
+        query = "SELECT COUNT(*) FROM rents_by_category_country_and_year;"
+
+        results = self.sourceConnection.runQuery(query)
+        row_count = results[0][0]
         rounds = int(row_count/1000) + 1
 
         for i in range(0, rounds):
-            query_costs = """
-            SELECT COUNT(rental.rental_id) as total_copies_lost, film.title, SUM(payment.amount) as total_rental_lost, SUM(film.replacement_cost) as total_replacement_cost
-                FROM rental 
-                LEFT JOIN inventory ON(rental.inventory_id = inventory.inventory_id)
-                LEFT JOIN film ON(inventory.film_id = film.film_id)
-                LEFT JOIN payment ON(rental.rental_id = payment.payment_id)
-                WHERE return_date IS NULL
-                GROUP BY film.title, film.special_features ORDER BY total_copies_lost DESC, total_replacement_cost DESC;"""
+            query = "SELECT MAX(rental) as rental, country, year FROM rents_by_category_country_and_year GROUP BY year, country ORDER BY country ASC, year DESC"
+            query += " LIMIT " + str(i * 1000) + ", 1000"
+
+            results = self.sourceConnection.runQuery(query)
             
-            costs = self.sourceConnection.runQuery(query_costs)
+            for j in results:
+                query_category = "SELECT category FROM rents_by_category_country_and_year WHERE year = " + str(j[2]) + " AND country = '" + j[1] + "' AND rental = "+ str(j[0]) +";"
+                
+                categories = self.sourceConnection.runQuery(query_category)
 
-            for cost in costs:
-                query_insert = "INSERT INTO money_lost_on_rentals (total_copies_lost, title, total_rental_lost, total_replacement_cost) VALUES "
-                query_insert += "(" + str(cost[0]) + ", '" + cost[1] + "', " + str(cost[2]) + ", " + str(cost[3]) + ")"
+                for category in categories:
+                    query_insert = "INSERT INTO rents_by_category_country_and_year (rental, year, category, country) VALUES ("+str(j[0])+", "+str(j[2])+", '"+category[0]+"', '"+j[1]+"' )"
 
-                self.targetConnection.runQuery(query_insert)
-
-                self.targetConnection.commitChanges()
-
-
-    
-    
+                    self.targetConnection.runQuery(query_insert)
+                    self.targetConnection.commitChanges()
