@@ -1,4 +1,4 @@
-# Sakila ETL Workshop
+# Workshop #1: Sakila ETL Workshop
 
 Welcome!, this is my workshop to get to know how *Extraction*, *Tranformation* and *Load* operations work for business intelligence purposes. In here, I am using the Sakila sample database of MySQL as main data source, you can find more [here](https://dev.mysql.com/doc/sakila/en/).
 
