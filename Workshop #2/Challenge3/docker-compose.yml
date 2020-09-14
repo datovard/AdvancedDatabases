@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+    sql-server:
+      container_name: sqlserver2019
+      image: mcr.microsoft.com/mssql/server
+      ports:
+        - 1433:1433
+      environment:
+        ACCEPT_EULA: Y
+        SA_PASSWORD: PasswordO1.
+        MSSQL_PID: Express
+      volumes:
+        - sqlserver-source-data:/var/opt/mssql
+        - ./config/db/:/scripts
+
+volumes:
+  sqlserver-source-data:
