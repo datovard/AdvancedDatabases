@@ -4,18 +4,12 @@ Welcome!, this is a workshop based on the design and creation of data warehouses
 
 ## Challenge #1
 
-Consultar el modelo E/R de la bases de datos Sakila de MySQL, y diseñar una
-bodega de datos, siguiendo la metodología Kimball. Identificar los hechos,
-granularidad, dimensiones, jerarquías de las dimensiones, y medidas. Identificar
-dimensiones: junk, des-generadas, y que cambian lentamente. Identificar relaciones
-muchos a muchos entre la Tabla de hechos y dimensiones para darles solución.
-
 Having the Sakila database and its E/R model, design a data warehouse following the Kimball mehodology or Bottom-up data warehouse approach.
 
-Identify: 
-1. Facts
-2. Granularity
-3. Dimensions
+Your tasks are to identify: 
+1. Facts table
+2. Its granularity 
+3. The dimensions related:
 	- Hierarchy of those dimensions
 	- Junk
 	- De-generated
@@ -23,6 +17,59 @@ Identify:
 4. Metrics. 
 
 Additionally, identify many-to-many relations between facts and dimension tables to provide a solution.
+
+### Solution to challenge # 1
+
+Here is an E/R model of the Sakila database:
+
+![alt text](./Challenge1/misc/Sakila_database.PNG "Sakila database")
+
+### First step - Analizing some tasks that might be useful for Sakila:
+I'm going to use the tasks that we defined in the Workshop #1 to help us define our data warehouse
+
+1. We want to know which category of films is the most viewed in each city and country per week, month and year
+
+2. We want to know the top five most popular films per category
+
+3. We want to know which film is getting the most unreturned rentals, the total cost of replacement of those copies and how much it was lost on those rentals
+
+4. We want to know the rentability of each of the stores
+
+5. We want to know which stores are having the most late payments (payments after the return date) per week, month and year
+
+6. We want to know the employee that rents the most per month per store (Employee of the month)
+
+|  | 1 | 2 | 3 | 4 | 5 | 6 |
+|-|-|-|-|-|-|-|
+| Which is the facts table related on this task? | **Film** | **Film** | **Rental** | **Rental** | **Rental** | **Staff** |
+| Which are the dimensions related on this task? | - Film_category<br>- Category<br>- Inventory<br>- Rental<br>- Customer<br>- Address<br>- City<br>- Country | - Film_category<br>- Category | - Inventory<br>- Film<br>- Payment | - Inventory<br>- Store | - Payment<br>- Inventory<br>- Store | - Inventory<br>- Store |
+| Which Sakila departments are interested on this task? | - Sales department<br>- Market management department | - Sales department<br>- Market management department | - Portfolio department<br>- Collection Department | - Sales department<br>- Operations department | - Sales department<br>- Operations department | - Sales department<br>- Operations department |
+
+### Second step - Identifyng facts, metrics and dimensions:
+
+| Facts | Film | Rental | Staff |
+|-:|-|-|-|
+| Useful metrics | 1. Title<br>2. Description<br>3. Release year<br>4. Rental duration<br>5. Rental rate<br>6. Length<br>7. Replacement cost<br>8. Rating<br>9. Special features | 1. Rental date<br>2. Return date<br>3. Time difference between return date and last payment<br>4. Total payments | 1. First name<br>2. Last name<br>3. Email<br>4. Active state |
+| Related tables | 1. Category and Film category<br>2. Inventory<br>3. Rental<br>4. Customer<br>5. Address<br>6. City<br>7. Country | 1. Payments<br>2. Inventory<br>3. Store<br>4. Address<br>5. City<br>6. Country | 1. Rental<br>2. Inventory<br>3. Store<br>4. Address<br>5. City<br>6. Country |
+| Granularities | 1. For the dates:<br>   - Day<br>   - Week<br>   - Month<br>   - Year<br>2. For films and rentals:<br>   - Each row is a rental of a movie<br>3. Locations are going to be:<br>   - Address<br>   - City<br>   - Country | 1. For payments, there are multiple payments for each rental:<br>   - Date of each payment as Day, Week, Month, Year<br>2. Inventory is going to be part of the films and rentals | - |
+
+### Third step - Designing the dimensions:
+
+This is a first proposal for a model:
+
+![alt text](./Challenge1/misc/FilmDW_first_approach.PNG "First approach of a DW")
+
+1. You can find an hierarchy in Store composed by:
+	- country > city > address
+2. You can see a big union between film, inventory and rental, on the Film_rental you can find values as:
+	- rental_date 
+	- return_date
+	- staff_id
+	- customer_id
+
+### Fourth step - Analysis and modifications:
+
+On this step, we are going to analize some cases where 
 
 ## Challenge #2
 
@@ -53,7 +100,7 @@ Your tasks are:
 
 	And some results:
 
-	![alt text](./Challenge3/misc/Query-1.PNG "Sakila diagram")
+	![alt text](./Challenge3/misc/Query-1.PNG "Query 1 result")
 
 	2. The best seller for each of the products during 2013:
 
