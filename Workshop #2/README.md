@@ -104,6 +104,39 @@ A web business company records the data of each visit on the web (weblog file). 
 
 Your task is to identify the necessary transformation tasks, and model a data warehouse to generate statistics to connect this information to the web sales. It is recommend reviewing weblog files and [Google Analytics](https://analytics.google.com/analytics/web/provision/#/provision) and other [visualization tools](https://www.weblogexpert.com/sample/index.htm) to see the impact that the analysis of web information would have.
 
+Having as example a weblog as the managed by Apache:
+
+```log
+83.149.9.216 - - [17/May/2015:10:05:03 +0000] "GET /presentations/logstash-monitorama-2013/images/kibana-search.png 
+HTTP/1.1" 200 203023 "http://semicomplete.com/presentations/logstash-monitorama-2013/" "Mozilla/5.0 
+(Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.77 Safari/537.36"
+```
+
+You can see some data of the access that your webpage is having, so you can extract some valuable information about how your page is being accessed.
+
+You can see on the example, data as:
+- The IP of the visitor
+- The datetime when entered the specific resource
+- The file or resource that consumed
+- The HTTP response that get returned
+- The size of the returned file
+- The referred page (From where else on this website did the visitor get to this specific resource)
+- The web browser used by the visitor
+- The operating system
+
+Additionally, you could transform the IPs into geolocation data as:
+- Continent
+- Country
+- City
+
+And you transform all this data into valuable information as:
+- Top countries accessing your website by bandwidth / hits
+- Hits and visits per day
+- The most popular images in your website
+- Most accessed pages of your website
+- Most common web browsers/operating systems checking your website
+
+
 ## Challenge #3
 
 Go to [The Code Project](https://www.codeproject.com/Articles/652108/Create-First-Data-WareHouse) where you can find an example on how to create a data warehouse:
