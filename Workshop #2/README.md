@@ -136,6 +136,18 @@ And you transform all this data into valuable information as:
 - Most accessed pages of your website
 - Most common web browsers/operating systems checking your website
 
+### How can we load this data into a database?
+
+The most important part is that you must break down each one of the lines of a log into the parts that you want to upload into your warehouse. For example, if you take a look at the previous log line example, you can find that it have this format:
+
+```log
+[IP] - - [Datetime] [Resource string] [HTTP response code] 
+[Resource size] [Referref] [Visitor machine information as: Web browser - Operating System - Web engine]
+```
+
+### Proposed data warehouse model
+
+![alt text](./Challenge2/misc/Weblog_DW.png "Weblog approach of a DW")
 
 ## Challenge #3
 
