@@ -12,7 +12,7 @@ Your tasks are to identify:
 3. The dimensions related:
 	- Hierarchy of those dimensions
 	- Junk
-	- De-generated
+	- Degenerated
 	- Slow changing
 4. Metrics. 
 
@@ -43,7 +43,7 @@ I'm going to use the tasks that we defined in the Workshop #1 to help us define 
 |-|-|-|-|-|-|-|
 | Which is the facts table related on this task? | **Film** | **Film** | **Rental** | **Rental** | **Rental** | **Staff** |
 | Which are the dimensions related on this task? | - Film_category<br>- Category<br>- Inventory<br>- Rental<br>- Customer<br>- Address<br>- City<br>- Country | - Film_category<br>- Category | - Inventory<br>- Film<br>- Payment | - Inventory<br>- Store | - Payment<br>- Inventory<br>- Store | - Inventory<br>- Store |
-| Which Sakila departments are interested on this task? | - Sales department<br>- Market management department | - Sales department<br>- Market management department | - Portfolio department<br>- Collection Department | - Sales department<br>- Operations department | - Sales department<br>- Operations department | - Sales department<br>- Operations department |
+| Which Sakila departments are interested on this task? | - Sales department<br>- Market management department | - Sales department<br>- Market management department | - Portfolio department<br>- Collection Department | - Sales department<br>- Operations department | - Sales department<br>- Operations department | - HR department |
 
 ### Second step - Identifyng facts, metrics and dimensions:
 
@@ -59,18 +59,45 @@ This is a first proposal for a model:
 
 ![alt text](./Challenge1/misc/FilmDW_first_approach.PNG "First approach of a DW")
 
-1. You can find an hierarchy in Store composed by:
+### Fourth step - Analysis and modifications:
+
+On this step, we are going to analize some cases where we could find special characteristics like:
+1. Common dimensions:
+
+|  | Rental | Film | Staff | Store | Customer | Payment | Date |
+|-|-|-|-|-|-|-|-|
+| Sales | X | X |  |  | X | X | X |
+| Operation | X | X |  | X |  | X | X |
+| Human Resources | X | X | X | X |  | X | X |
+
+2. Hierarchies:
+- You can find an hierarchy in Store composed by:
 	- country > city > address
-2. You can see a big union between film, inventory and rental, on the Film_rental you can find values as:
+- You can see a big union between inventory and rental, on the rental you can find values as:
 	- rental_date 
 	- return_date
 	- staff_id
 	- customer_id
 
-### Fourth step - Analysis and modifications:
+3. Slow changing dimensions
+ - Category is a slow changing dimension, there's not that much new categories of movies every day.
+ - Store could be a slow changing dimension depending on the expansion strategies of Sakila
 
-On this step, we are going to analize some cases where 
+4. Fast changing dimensions
+ - If we check the Rental dimension, we can find that the return_date_id and the rental duration are not completely defined on a rental upload and can be fast changing metrics (it depends on the total payment of the rental by the customer). We can set this metrics outside this table as:
 
+![alt text](./Challenge1/misc/FilmDW_second_approach.PNG "Second approach of a DW")
+
+5. Junk dimensions
+	- I don't identify any junk dimension yet.
+
+6. Many-to-many relationships:
+
+We still have a many-to-many relationship between categories and films, let's resolve it:
+
+![alt text](./Challenge1/misc/FilmDW_third_approach.PNG "Third approach of a DW")
+
+ 
 ## Challenge #2
 
 A web business company records the data of each visit on the web (weblog file). A clickstream is every event that occurs on every web page on the company's servers. The clickstream contains a number of data such as the page, session, the referrer, etc. 
