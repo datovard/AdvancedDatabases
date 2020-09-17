@@ -57,7 +57,7 @@ I'm going to use the tasks that we defined in the Workshop #1 to help us define 
 
 This is a first proposal for a model:
 
-![alt text](./Challenge1/misc/FilmDW_first_approach.PNG "First approach of a DW")
+![alt text](./Challenge1/misc/FilmDW_first_approach.png "First approach of a DW")
 
 ### Fourth step - Analysis and modifications:
 
@@ -86,7 +86,7 @@ On this step, we are going to analize some cases where we could find special cha
 4. Fast changing dimensions
  - If we check the Rental dimension, we can find that the return_date_id and the rental duration are not completely defined on a rental upload and can be fast changing metrics (it depends on the total payment of the rental by the customer). We can set this metrics outside this table as:
 
-![alt text](./Challenge1/misc/FilmDW_second_approach.PNG "Second approach of a DW")
+![alt text](./Challenge1/misc/FilmDW_second_approach.png "Second approach of a DW")
 
 5. Junk dimensions
 	- I don't identify any junk dimension yet.
@@ -95,7 +95,7 @@ On this step, we are going to analize some cases where we could find special cha
 
 We still have a many-to-many relationship between categories and films, let's resolve it:
 
-![alt text](./Challenge1/misc/FilmDW_third_approach.PNG "Third approach of a DW")
+![alt text](./Challenge1/misc/FilmDW_third_approach.png "Third approach of a DW")
 
  
 ## Challenge #2
