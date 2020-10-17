@@ -25,9 +25,9 @@ efficient way to perform the following access patterns:
 
 ### How to run an HBase Docker instance?
 
-This project have a docker-compose file where you can find the image used, the volumes used to persist data and the mapping of the ports. Run this command on your console or terminal
+This project have a docker-compose file where you can find the image used, the volumes used to persist data and the mapping of the ports. Run this command on your console or terminal, be sure that your terminal is on 
 
-```console
+```
 docker-compose up -d
 ```
 
@@ -53,8 +53,24 @@ If you cloned or downloaded this repo, our command with instance name must be so
 docker exec -it workshop3_database_1 /bin/bash
 ```
 
+If you want to run it on another folder, copy the docker-compose.yml of this workshop and paste it on your project. To get the name of your instance, run this command:
+
+```
+docker ps -a
+```
+
+The name of your instance should appear on the image name of *dajobe/hbase* and must look something like this (check the name at the end of this result):
+
+```
+CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS                  PORTS                                                                                                                                                                                                                    NAMES
+bbba6090f9f2        dajobe/hbase                   "/opt/hbase-server"      17 minutes ago      Up 17 minutes           0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 8080/tcp, 8085/tcp, 9090/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:16000->16000/tcp, 0.0.0.0:16010->16010/tcp, 0.0.0.0:16020->16020/tcp, 0.0.0.0:16030->16030/tcp, 9095/tcp   workshop3_database_1
+```
+
 Once you entered the instance, run this command to send *queries* to your HBase instance:
 
 ```
 hbase shell
 ```
+
+Now you can access your own HBase instance in Docker really easy!
+
